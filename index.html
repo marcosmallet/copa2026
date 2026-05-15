@@ -37,9 +37,34 @@
         .card-jogo.brasil-match { background-color: #FFFDEB; border-color: var(--amarelo); }
         
         .meta-dados {
-            display: flex; justify-content: space-between;
+            display: flex; justify-content: space-between; align-items: center;
             font-size: 0.7rem; color: #666; margin-bottom: 4px;
-            border-bottom: 1px dashed #EEE; padding-bottom: 2px;
+            border-bottom: 1px dashed #EEE; padding-bottom: 2px; gap: 8px;
+        }
+        .data-hora-local {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            text-align: right;
+            white-space: nowrap;
+            line-height: 1.08;
+        }
+        .data-hora-local strong {
+            color: var(--azul);
+            font-weight: 700;
+            line-height: 1.08;
+        }
+        .data-hora-local small {
+            display: block;
+            color: #777;
+            font-size: 0.65rem;
+            line-height: 1.08;
+        }
+        .cidade-jogo {
+            display: block;
+            color: #666;
+            line-height: 1.08;
         }
         .flex-jogo {
             display: grid;
@@ -126,7 +151,10 @@
             .header p { font-size: 1rem; }
             .secao-titulo { font-size: 0.9rem; padding: 8px 10px; }
             .card-jogo { padding: 8px; }
-            .meta-dados { font-size: 0.78rem; gap: 6px; }
+            .meta-dados { font-size: 0.76rem; gap: 6px; }
+            .data-hora-local { font-size: 0.76rem; }
+            .data-hora-local small { font-size: 0.62rem; }
+            .cidade-jogo { font-size: 0.72rem; }
             .flex-jogo { grid-template-columns: minmax(0, 1fr) 78px minmax(0, 1fr); gap: 4px; }
             .time { font-size: 0.92rem; gap: 5px; }
             .flag-img { width: 22px; height: 15px; }
@@ -197,6 +225,24 @@
         "Chile": "cl", "Croácia": "hr", "Uzbequistão": "uz", "Colômbia": "co"
     };
 
+    // Horários convertidos para o fuso do Rio de Janeiro / Brasília (BRT, UTC-3).
+    // Quando a conversão passa da meia-noite, a data exibida abaixo já considera o dia no Brasil.
+    const dataHoraRioPorJogo = {
+        1: "11/06 16:00", 2: "11/06 23:00", 3: "12/06 16:00", 4: "12/06 22:00",
+        5: "13/06 19:00", 6: "13/06 16:00", 7: "13/06 22:00", 8: "14/06 01:00",
+        9: "14/06 14:00", 10: "14/06 17:00", 11: "14/06 20:00", 12: "14/06 23:00",
+        13: "15/06 13:00", 14: "15/06 16:00", 15: "15/06 19:00", 16: "15/06 22:00",
+        17: "16/06 16:00", 18: "16/06 19:00", 19: "16/06 22:00", 20: "17/06 01:00",
+        21: "17/06 14:00", 22: "17/06 17:00", 23: "17/06 17:00", 24: "17/06 23:00",
+        25: "18/06 22:00", 26: "18/06 13:00", 27: "18/06 19:00", 28: "19/06 16:00",
+        29: "19/06 22:00", 30: "19/06 19:00", 51: "24/06 19:00",
+        73: "28/06 16:00", 74: "29/06 17:30", 89: "04/07 18:00", 104: "19/07 16:00"
+    };
+
+    function dataHoraRio(id, dataPadrao) {
+        return dataHoraRioPorJogo[id] || `${dataPadrao} --:--`;
+    }
+
     function gF(nomeTime) {
         let codigo = codigosBandeiras[nomeTime.trim()];
         if (!codigo) return ""; 
@@ -241,7 +287,7 @@
 
             let html = `
                 <div class="card-jogo ${isBr}">
-                    <div class="meta-dados"><span>Jogo ${id} — ${gp}</span><span>${data} 📍 ${local}</span></div>
+                    <div class="meta-dados"><span>Jogo ${id} — ${gp}</span><span class="data-hora-local"><strong>${dataHoraRio(id, data)}</strong><small>Rio de Janeiro</small><span class="cidade-jogo">📍 ${local}</span></span></div>
                     <div class="flex-jogo">
                         <div class="time mandante ${txtBr1}"><span class="nome-time">${t1}</span> ${gF(t1)}</div>
                         <div class="placar"><input type="number" id="g_${id}_1" oninput="sv(this)"><span>x</span><input type="number" id="g_${id}_2" oninput="sv(this)"></div>
@@ -259,7 +305,7 @@
 
             let html = `
                 <div class="card-jogo" ${corFinal}>
-                    <div class="meta-dados"><span>Jogo ${id}</span><span>${data} 📍 ${local}</span></div>
+                    <div class="meta-dados"><span>Jogo ${id}</span><span class="data-hora-local"><strong>${dataHoraRio(id, data)}</strong><small>Rio de Janeiro</small><span class="cidade-jogo">📍 ${local}</span></span></div>
                     <div class="flex-jogo">
                         <div class="time mandante"><input type="text" id="t_${id}_1" placeholder="${p1}" oninput="sv(this)"></div>
                         <div class="placar"><input type="number" id="g_${id}_1" oninput="sv(this)"><span>x</span><input type="number" id="g_${id}_2" oninput="sv(this)"></div>
