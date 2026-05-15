@@ -109,7 +109,6 @@
 </div>
 
 <script>
-    // Mapeamento de códigos de países ISO padrão para o servidor CDN estável
     const codigosBandeiras = {
         "México": "mx", "África do Sul": "za", "Coreia do Sul": "kr", "Tchéquia": "cz",
         "Canadá": "ca", "Bósnia": "ba", "EUA": "us", "Paraguai": "py",
@@ -127,7 +126,7 @@
 
     function gF(nomeTime) {
         let codigo = codigosBandeiras[nomeTime.trim()];
-        if (!codigo) return ""; // Retorna vazio se for texto de classificação (ex: "Vencedor 74")
+        if (!codigo) return ""; 
         return `<img src="https://flagcdn.com{codigo}.png" class="flag-img" alt="${nomeTime}">`;
     }
 
