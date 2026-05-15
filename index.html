@@ -41,30 +41,103 @@
             font-size: 0.7rem; color: #666; margin-bottom: 4px;
             border-bottom: 1px dashed #EEE; padding-bottom: 2px;
         }
-        .flex-jogo { display: flex; align-items: center; justify-content: space-between; }
+        .flex-jogo {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: 8px;
+        }
         
-        .time { display: flex; align-items: center; gap: 8px; width: 40%; font-size: 0.85rem; font-weight: 600; }
+        .time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: auto;
+            min-width: 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            overflow: hidden;
+        }
         .time.mandante { justify-content: flex-end; text-align: right; }
         .time.visitante { justify-content: flex-start; text-align: left; }
         .time.br-text { color: var(--verde); font-weight: bold; }
+        .nome-time {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
         
         .time input[type="text"] {
-            width: 100%; border: none; background: transparent; font-weight: bold;
-            color: var(--azul); border-bottom: 1px dashed #BBB; font-size: 0.8rem;
+            width: 100%;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            color: var(--azul);
+            border-bottom: 1px dashed #BBB;
+            font-size: 0.8rem;
         }
         .time input[type="text"]:focus { outline: none; border-bottom-color: var(--verde); }
         
-        .placar { display: flex; align-items: center; justify-content: center; gap: 4px; width: 20%; }
-        .placar input[type="number"] {
-            width: 32px; height: 26px; text-align: center; font-weight: bold;
-            font-size: 0.95rem; border: 1px solid #BBB; border-radius: 4px;
+        .placar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: auto;
+            flex-shrink: 0;
         }
+        .placar input[type="number"] {
+            width: 34px;
+            min-width: 34px;
+            max-width: 34px;
+            height: 26px;
+            box-sizing: border-box;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border: 1px solid #BBB;
+            border-radius: 4px;
+            padding: 0;
+        }
+        .placar input[type="number"]::-webkit-outer-spin-button,
+        .placar input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .placar input[type="number"] { -moz-appearance: textfield; }
         .placar input[type="number"]:focus { border-color: var(--verde); outline: none; background: #E8F5E9; }
         .placar span { font-size: 0.75rem; color: #999; font-weight: bold; }
         
         .flag-img {
-            width: 24px; height: 16px; border: 1px solid #CCC;
-            vertical-align: middle; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            width: 24px;
+            height: 16px;
+            border: 1px solid #CCC;
+            vertical-align: middle;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            object-fit: cover;
+            flex: 0 0 auto;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 0; }
+            .container { padding: 10px; border-radius: 10px; }
+            .header { padding: 20px 12px; }
+            .header h1 { font-size: 1.55rem; }
+            .header p { font-size: 1rem; }
+            .secao-titulo { font-size: 0.9rem; padding: 8px 10px; }
+            .card-jogo { padding: 8px; }
+            .meta-dados { font-size: 0.78rem; gap: 6px; }
+            .flex-jogo { grid-template-columns: minmax(0, 1fr) 78px minmax(0, 1fr); gap: 4px; }
+            .time { font-size: 0.92rem; gap: 5px; }
+            .flag-img { width: 22px; height: 15px; }
+            .placar { gap: 3px; }
+            .placar input[type="number"] {
+                width: 31px;
+                min-width: 31px;
+                max-width: 31px;
+                height: 28px;
+                font-size: 0.9rem;
+            }
         }
         .btn-limpar {
             background: #D32F2F; color: white; border: none; padding: 8px 16px;
@@ -170,9 +243,9 @@
                 <div class="card-jogo ${isBr}">
                     <div class="meta-dados"><span>Jogo ${id} — ${gp}</span><span>${data} 📍 ${local}</span></div>
                     <div class="flex-jogo">
-                        <div class="time mandante ${txtBr1}">${t1} ${gF(t1)}</div>
+                        <div class="time mandante ${txtBr1}"><span class="nome-time">${t1}</span> ${gF(t1)}</div>
                         <div class="placar"><input type="number" id="g_${id}_1" oninput="sv(this)"><span>x</span><input type="number" id="g_${id}_2" oninput="sv(this)"></div>
-                        <div class="time visitante ${txtBr2}">${gF(t2)} ${t2}</div>
+                        <div class="time visitante ${txtBr2}">${gF(t2)} <span class="nome-time">${t2}</span></div>
                     </div>
                 </div>`;
             div.insertAdjacentHTML('beforeend', html);
