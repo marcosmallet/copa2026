@@ -127,7 +127,7 @@
     function gF(nomeTime) {
         let codigo = codigosBandeiras[nomeTime.trim()];
         if (!codigo) return ""; 
-        return `<img src="https://flagcdn.com{codigo}.png" class="flag-img" alt="${nomeTime}">`;
+        return `<img src="https://flagcdn.com/w40/${codigo}.png" srcset="https://flagcdn.com/w80/${codigo}.png 2x" class="flag-img" alt="Bandeira de ${nomeTime}" loading="lazy" onerror="this.style.display='none'">`;
     }
 
     const j = [
